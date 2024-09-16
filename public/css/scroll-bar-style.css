@@ -1,0 +1,21 @@
+/* For browsers that support the scrollbar-color property */
+* {
+    scrollbar-color: #3a6cf4;
+  }
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f6f6f6;
+  box-shadow: 0 0 10 #DDD inset;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
