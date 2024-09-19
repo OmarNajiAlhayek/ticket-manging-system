@@ -158,79 +158,74 @@
 
 
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('toggleModal');
-    const closeButton = document.getElementById('closeModal');
-    const modal = document.getElementById('crud-modal');
-    const modalContent = modal.querySelector('.relative.bg-white');
-    const form = modal.querySelector('form');
 
-    function closeModal() {
-        modal.classList.add('hidden');
-        modal.setAttribute('inert', '');
-        modal.setAttribute('aria-hidden', 'true');
-    }
+$(document).ready(function () {
 
-    function toggleModal() {
-        modal.classList.toggle('hidden');
-        if (modal.classList.contains('hidden')) {
-            modal.setAttribute('inert', '');
-            modal.setAttribute('aria-hidden', 'true');
-        } else {
-            modal.removeAttribute('inert');
-            modal.setAttribute('aria-hidden', 'false');
-        }
-    }
+const showModalButtons = $('.show-modal-btn');
+const closeModalButtons = $('.close-modal-btn');
+const modals = $('.modal');
 
-    if (toggleButton) {
-        toggleButton.addEventListener('click', function() {
-            toggleModal();
-        });
-    }
+function showModal(ticketId) {
+    const modal = $(`#modal-${ticketId}`);
+    modal.fadeIn(200).removeClass('hidden').removeAttr('inert').attr('aria-hidden', 'false');
+    // document.querySelector(`#modal-${ticketId}`).style.display = 'flex';
+    modal.css('display', 'flex');
+}
 
-    if (closeButton) {
-        closeButton.addEventListener('click', function () {
-            closeModal();
-        });
-    }
-
-    // Close modal when clicking outside of the modal content
-    modal.addEventListener('click', function (event) {
-        if (!modalContent.contains(event.target)) {
-            closeModal();
-        }
-    });
-
-    // Ensure form submission is not interrupted
-    form.addEventListener('submit', function (event) {
-        // Optionally, you can add any custom validation here
-        // If validation fails, call event.preventDefault();
-    });
-
-    // Show modal if there are errors
-    if (document.querySelector('.error')) {
-        toggleModal();
-    }
-
-    flatpickr("#deadline", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-    });
-
-    // Ensure form submission is not interrupted
-    form.addEventListener('submit', function (event) {
-        // Optionally, you can add any custom validation here
-        // If validation fails, call event.preventDefault();
-    });
-
-    @if ($errors->any())
-    toggleModal();
-    @endif
+showModalButtons.on('click', function () {
+    const ticketId = $(this).data('ticket-id');
+    showModal(ticketId);
+    localStorage.setItem('previosOpendModal', JSON.stringify(ticketId));
 });
 
+closeModalButtons.on('click', function () {
+    const ticketId = $(this).data('ticket-id');
+    const modal = $(`#modal-${ticketId}`);
+    modal.fadeOut(200, function () {
+        modal.addClass('hidden').attr('inert', '').attr('aria-hidden', 'true');
+    });
+});
 
+modals.on('click', function (e) {
+    //  e.target.classList.contains('close-btn')
+    // if ($(e.target).hasClass('close-btn'))
+    //     return;
+    const ticketId = e.target.id?.match(/\d+/)?.[0];
+
+    if (! ticketId)
+        return;
+
+    const modalContent = $(`#modal-content-${ticketId}`);
+    if (modalContent.length &&
+        !modalContent?.[0]?.contains(e.target)) {
+        $(e.target).fadeOut(200, function () {
+            $(e.target).addClass('hidden').attr('inert', '').attr('aria-hidden', 'true');
+        })
+    }
+});
+
+flatpickr(".deadline", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+});
+
+const sessionMessage = $('#session-message');
+
+if (sessionMessage.length) {
+    setTimeout(() => {
+        sessionMessage.fadeOut(200, function () {
+            $(this).remove();
+        });
+    }, 3000);
+}
+
+@if ($errors->any())
+    showModal(JSON.parse(localStorage.getItem('previosOpendModal')))
+@endif
+
+
+});
 </script>
-
 
 
 

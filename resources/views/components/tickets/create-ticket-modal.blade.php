@@ -1,22 +1,25 @@
 <!-- Modal toggle -->
-<button id="toggleModal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+
+<x-modals.show-btn class="show-modal-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
     Create Ticket
-</button>
+</x-modals.show-btn>
 
   <!-- Main modal -->
-  <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 flex items-center justify-center hidden w-full h-full bg-gray-800 bg-opacity-50" inert>
-      <div class="relative w-full max-w-md max-h-full p-4 bg-white rounded-lg shadow dark:bg-gray-700">
+  <x-modals.modal ticketId="0">
+
+      <div id="modal-content-0" class="relative w-full max-w-md max-h-full p-4 bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                   Create New Ticket
               </h3>
-              <button type="button" id="closeModal" class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white">
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-              </button>
+              <x-modals.close-btn class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg close-modal-btn hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </x-modals.close-btn>
+
           </div>
           <!-- Modal body -->
           <div class="p-4 md:p-5">
@@ -29,9 +32,9 @@
                                 Title
                             </label>
                             <input
-                                onblur="startTitleValidation(this)"
+                                {{-- onblur="startTitleValidation(this)"
                                 onfocus="validateTitle(this)"
-                                oninput="validateTitle(this)"
+                                oninput="validateTitle(this)" --}}
                                 type="text"
                                 id="title"
                                 name="title"
@@ -89,4 +92,4 @@
               </form>
           </div>
       </div>
-  </div>
+</x-modals.modal>

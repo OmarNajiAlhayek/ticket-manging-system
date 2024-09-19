@@ -3,28 +3,30 @@
 ])
 
 <!-- Modal toggle -->
-<button data-ticket-id="{{ $ticket->id }}" class="text-sm text-blue-600 view-more-btn hover:underline" type="button">
+<x-modals.show-btn class="text-sm text-blue-600 show-modal-btn hover:underline">
     View more...
-</button>
+</x-modals.show-btn>
 
   <!-- Main modal -->
-  <div id="modal-{{ $ticket->id }}" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 flex items-center justify-center hidden w-full h-full bg-gray-800 bg-opacity-50" inert>
-      <div id="view-modal-content" class="relative w-full max-w-md max-h-full p-4 bg-white rounded-lg shadow dark:bg-gray-700">
+  <x-modals.modal ticketId="{{ $ticket->id }}">
+
+      <div id="modal-content-{{ $ticket->id }}" class="relative w-full max-w-md max-h-full p-4 bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                   Update Ticket
               </h3>
-              <button type="button" data-ticket-id="{{ $ticket->id }}" class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg close-btn hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white">
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-              </button>
+              <x-modals.close-btn class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg close-modal-btn hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </x-modals.close-btn>
+
           </div>
           <!-- Modal body -->
           <div class="p-4 md:p-5">
-            <form id="view-form" action="{{ route('tickets.update', $ticket) }}" method="POST" class="p-4 md:p-5">
+            <form action="{{ route('tickets.update', $ticket) }}" method="POST" class="p-4 md:p-5">
                 @csrf
                 @method('PUT')
                   <div class="grid grid-cols-2 gap-4 mb-4">
@@ -33,9 +35,9 @@
                                 Title
                             </label>
                             <input
-                                onblur="startTitleValidation(this)"
+                                {{-- onblur="startTitleValidation(this)"
                                 onfocus="validateTitle(this)"
-                                oninput="validateTitle(this)"
+                                oninput="validateTitle(this)" --}}
                                 type="text"
                                 id="title"
                                 name="title"
@@ -83,7 +85,7 @@
                   </button>
                   <button
                         onclick="if (confirm('Are you sure that you want to delete this ticket?')) { document.getElementById('delete-form').submit(); } else { event.preventDefault(); }"
-                        form="delete-form"
+                        form="delete-form-{{ $ticket->id }}"
                         type="submit"
                         class="text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -96,10 +98,10 @@
 
               </form>
 
-              <form id="delete-form" action="{{ route('tickets.destroy', $ticket) }}" method="POST">
+              <form id="delete-form-{{ $ticket->id }}" action="{{ route('tickets.destroy', $ticket) }}" method="POST">
                 @csrf
                 @method('DELETE')
               </form>
           </div>
       </div>
-  </div>
+    </x-modals.modal>
