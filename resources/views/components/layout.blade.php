@@ -166,6 +166,7 @@ const closeModalButtons = $('.close-modal-btn');
 const modals = $('.modal');
 
 function showModal(ticketId) {
+
     const modal = $(`#modal-${ticketId}`);
     modal.fadeIn(200).removeClass('hidden').removeAttr('inert').attr('aria-hidden', 'false');
     // document.querySelector(`#modal-${ticketId}`).style.display = 'flex';
@@ -174,6 +175,7 @@ function showModal(ticketId) {
 
 showModalButtons.on('click', function () {
     const ticketId = $(this).data('ticket-id');
+
     showModal(ticketId);
     localStorage.setItem('previosOpendModal', JSON.stringify(ticketId));
 });
