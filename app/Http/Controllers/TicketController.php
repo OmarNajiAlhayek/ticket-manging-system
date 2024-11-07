@@ -10,6 +10,7 @@ use App\Http\Requests\StoreTicketRequest;
 
 class TicketController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -17,17 +18,17 @@ class TicketController extends Controller
     {
         $q = request()->query('q');
 
-
         return view('tickets.index', [
             'tickets' => Ticket::query()
-                               ->select('id', 'title', 'description', 'status', 'deadline')
-                               ->when($q, function ($query) use ($q) {
-                         $query->where('title', 'LIKE', "%$q%")
-                               ->orWhere('description', 'LIKE', "%$q%")
-                               ->orWhere('deadline', 'LIKE', "%$q%")
-                               ->orWhere('id', 'LIKE', "%$q%");
-                             })->orderBy('created_at', 'DESC')
-                             ->get()
+                ->when($q, function ($query) use ($q) {
+                    $query->where('title', 'LIKE', "$q%")
+                        ->orWhere('description', 'LIKE', "$q%")
+                        ->orWhere('deadline', 'LIKE', "$q%")
+                        ->orWhere('id', 'LIKE', "$q%");
+                })->orderBy('created_at', 'DESC')
+                ->with('user')
+                ->with('assigned_users')
+                ->paginate(25)
         ]);
     }
 
@@ -46,10 +47,19 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request): RedirectResponse
     {
+        $request
+            ->user()
+            ->tickets()
+            ->create($request->validated());
 
-        Ticket::create($request->validated());
 
-        return to_route('tickets.index')->with('success', 'Ticket created successfully.');
+        $request
+            ->user()
+            ->tickets_assigned_to_user()
+            ->attach($request->assigned_users);
+
+        return to_route('tickets.index')
+            ->with('success', 'Ticket created successfully.');
     }
 
     /**

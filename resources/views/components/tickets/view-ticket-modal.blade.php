@@ -1,6 +1,10 @@
 @props([
     'ticket' => new App\Models\Ticket(),
 ])
+
+@php
+    $users = App\Models\User::select('id', 'name')->get();
+@endphp
 <!-- Modal toggle -->
 <x-modals.show-btn ticketId="{{ $ticket->id }}" class="text-sm text-blue-600 show-modal-btn hover:underline">
     View more...
@@ -66,6 +70,34 @@
                           </select>
                           <x-form-error name="status" />
                       </div>
+
+
+
+
+                      <div class="col-span-2">
+
+                        <label for="assigned_users" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Assigned Users
+                        </label>
+
+                         <select
+                            id="assigned_users"
+                            name="assigned_users[]"
+                            multiple
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        >
+                        @foreach($users as $user)
+                            <option @selected(in_array($user->id, $ticket->assigned_users->pluck('id')->toArray())) value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                        </select>
+
+                        <x-form-error name="assigned_users" />
+                  </div>
+
+
+
+
+
                       <div class="col-span-2">
                           <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticket Description</label>
                           <textarea

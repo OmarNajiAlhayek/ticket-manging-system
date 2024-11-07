@@ -41,8 +41,8 @@
                     <div class="hidden md:block">
                         <div class="flex items-center ml-4 md:ml-6">
                             @guest
-                                <x-nav-link href="/login" :active="request()->is('login')">Log In</x-nav-link>
-                                <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>
+                                <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">Log In</x-nav-link>
+                                <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">Register</x-nav-link>
                             @endguest
 
                             @auth
@@ -135,8 +135,9 @@
                 @livewire('ticket-search', ['active' => request()->routeIs('tickets.index')])
 
 
-
-                <x-tickets.create-ticket-modal />
+                @auth
+                    <x-tickets.create-ticket-modal />
+                @endauth
 
 
             </div>

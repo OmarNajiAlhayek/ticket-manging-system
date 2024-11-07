@@ -1,4 +1,7 @@
 import './bootstrap';
-import "../css/app.css";
 
-// alert('hello from the JS');
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();

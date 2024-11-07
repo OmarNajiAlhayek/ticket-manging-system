@@ -22,6 +22,7 @@
 
 
 <div class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+    <p class="font-bold">{{ $ticket->user->name }}</p>
     <div class="flex items-center justify-between mb-2">
 
         <div
@@ -37,25 +38,32 @@
 
 
             {{-- <a href="{{ route('tickets.show', $ticket) }}" class="text-sm text-blue-600 hover:underline">View more...</a> --}}
-            <x-tickets.view-ticket-modal :ticket="$ticket" />
+            @auth()
+                <x-tickets.view-ticket-modal :ticket="$ticket" />
+            @endauth
+
         </div>
         <div class="mb-4">
             <strong class="text-lg text-gray-800">{{ $ticket->title }}</strong>
         </div>
-        <div class="flex items-center justify-between">
-            <form action="{{ route('tickets.update-status', ['newStatus' => $previousStatus, 'ticket' => $ticket]) }}" method="POST" class="mr-2">
-                @csrf
-                @method('PATCH')
-                <button type="submit" class="px-2 py-1 text-sm text-white bg-black rounded hover:bg-gray-800">Mark as {{ $previousStatus }}</button>
-            </form>
-            <form action="{{ route('tickets.update-status', ['newStatus' => $nextStatus, 'ticket' => $ticket]) }}" method="POST">
-                @csrf
-                @method('PATCH')
-                <button type="submit" class="px-2 py-1 text-sm text-black bg-white border border-black rounded hover:bg-gray-100">Mark as {{ $nextStatus }}</button>
-            </form>
+        @auth
+
+            <div class="flex items-center justify-between">
+
+                <form action="{{ route('tickets.update-status', ['newStatus' => $previousStatus, 'ticket' => $ticket]) }}" method="POST" class="mr-2">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="px-2 py-1 text-sm text-white bg-black rounded hover:bg-gray-800">Mark as {{ $previousStatus }}</button>
+                </form>
+                <form action="{{ route('tickets.update-status', ['newStatus' => $nextStatus, 'ticket' => $ticket]) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="px-2 py-1 text-sm text-black bg-white border border-black rounded hover:bg-gray-100">Mark as {{ $nextStatus }}</button>
+                </form>
 
 
-        </div>
+            </div>
+        @endauth
     </div>
 @empty
     <p class="text-laracasts">No tickets here.</p>

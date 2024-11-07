@@ -1,5 +1,7 @@
 <!-- Modal toggle -->
-
+@php
+    $users = App\Models\User::select('id', 'name')->get();
+@endphp
 <x-modals.show-btn class="show-modal-btn block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
     Create Ticket
 </x-modals.show-btn>
@@ -58,6 +60,8 @@
                           >
                           <x-form-error name="deadline" />
                       </div>
+
+
                       <div class="col-span-2 sm:col-span-1">
                           <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                           <select
@@ -65,7 +69,6 @@
                                 name="status"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           >
-                              <option @selected(empty(old('status')))>Select Status</option>
                               <option @selected(old('status') === 'pending') value="pending">Pending</option>
                               <option @selected(old('status') === 'ongoing') value="ongoing">On Going</option>
                               <option @selected(old('status') === 'testing') value="testing">Testing</option>
@@ -73,6 +76,35 @@
                           </select>
                           <x-form-error name="status" />
                       </div>
+
+
+{{-- ? assigned_users --}}
+                      <div class="col-span-2">
+
+                        <label for="assigned_users" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Assigned Users
+                        </label>
+
+                         <select
+                            id="assigned_users"
+                            name="assigned_users[]"
+                            multiple
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        >
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                        </select>
+
+                        <x-form-error name="assigned_users" />
+                  </div>
+
+                  {{-- ? assigned_users --}}
+
+
+
+
+
                       <div class="col-span-2">
                           <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ticket Description</label>
                           <textarea

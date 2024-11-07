@@ -25,7 +25,8 @@ class StoreTicketRequest extends FormRequest
         return [
             'title' => ['required', 'max:255'],
             'description' => ['required'],
-            'deadline' => ['required'],//format,, 'after:today'
+            'deadline' => ['required', 'date'],//format,, 'after:today'
+            'assigned_users' => ['nullable', 'array'],
             'status' => ['required', 'in:pending,ongoing,testing,finished'],
         ];
     }

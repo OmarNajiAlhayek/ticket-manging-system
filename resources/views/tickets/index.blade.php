@@ -51,7 +51,7 @@
              status="finished" />
         </div>
     </div>
-
+    {{ $tickets->links() }}
 
 
 
