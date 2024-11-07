@@ -4,10 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+=======
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+>>>>>>> 5175a82efa4cfc71a48f8fe096d302b5c18f99f3
 
 class User extends Authenticatable
 {
@@ -47,6 +53,7 @@ class User extends Authenticatable
         ];
     }
 
+<<<<<<< HEAD
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
@@ -57,4 +64,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Ticket::class);
     }
 
+=======
+    public function tickets(): BelongsToMany
+    {
+        return $this->belongsToMany(Ticket::class);
+    }
+>>>>>>> 5175a82efa4cfc71a48f8fe096d302b5c18f99f3
 }

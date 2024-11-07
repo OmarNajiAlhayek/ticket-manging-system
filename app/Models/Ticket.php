@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+<<<<<<< HEAD
+=======
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+>>>>>>> 5175a82efa4cfc71a48f8fe096d302b5c18f99f3
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ticket extends Model
@@ -45,6 +48,7 @@ class Ticket extends Model
         ];
     }
 
+<<<<<<< HEAD
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -59,4 +63,15 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketFile::class);
     }
+=======
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
+>>>>>>> 5175a82efa4cfc71a48f8fe096d302b5c18f99f3
 }
