@@ -16,6 +16,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->enum('status', [
+                'pending',
+                'ongoing',
+                'testing',
+                'finished'
+            ]);
             $table->text('description');
             $table->timestamp('deadline',  0);
             $table->timestamps();
