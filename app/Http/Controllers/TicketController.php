@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreTicketRequest;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -47,11 +48,31 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request): RedirectResponse
     {
-        $request
+        $ticket = $request
             ->user()
             ->tickets()
             ->create($request->validated());
 
+        if ($request->hasFile('attachment_file'))
+        {
+
+
+            $fileName =
+            $ticket->id . '_' . uniqid() . '.' . $request->file('attachment_file')
+           ->getClientOriginalExtension();
+
+           // Store the file with the generated name
+           $url = $request->file('attachment_file')
+                          ->storeAs(
+                                   'uploads', $fileName,
+                                'public'
+                               );
+
+           $ticket->files()
+                  ->create([
+                    'url' => $url,
+                   ]);
+        }
 
         $request
             ->user()
@@ -85,8 +106,28 @@ class TicketController extends Controller
     {
         $ticket->update($request->validated());
 
+        if ($request->hasFile('attachment_file')) {
+
+            if ($ticket->files()->exists()) {
+                Storage::disk('public')->delete($ticket->files->url);
+                $ticket->files()->delete();
+            }
+
+
+            $fileName = $ticket->id . '_' . uniqid() . '.' . $request->file('attachment_file')->getClientOriginalExtension();
+
+
+            $url = $request->file('attachment_file')->storeAs('uploads', $fileName, 'public');
+
+
+            $ticket->files()->create([
+                'url' => $url,
+            ]);
+        }
+
         return to_route('tickets.index')->with('success', 'Ticket updated successfully.');
     }
+
 
     public function updateStatus(string $newStatus, Ticket $ticket): RedirectResponse
     {
@@ -100,10 +141,19 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket): RedirectResponse
     {
+        $files = $ticket->files;
+
+        foreach ($files as $file) {
+            Storage::disk('public')->delete($file->url);
+        }
+
+        $ticket->files()->delete();
+
         $ticket->delete();
 
-        return to_route('tickets.index')->with('success', 'Ticket deleted successfully.');
+        return to_route('tickets.index')->with('success', 'Ticket and its files deleted successfully.');
     }
+
 }
 
 

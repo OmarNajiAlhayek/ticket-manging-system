@@ -11,6 +11,8 @@ class TicketFile extends Model
 
     protected $table = 'ticket_files';
 
+    protected $fillable = ['url'];
+
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);

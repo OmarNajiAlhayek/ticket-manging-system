@@ -28,6 +28,7 @@ class StoreTicketRequest extends FormRequest
             'deadline' => ['required', 'date'],//format,, 'after:today'
             'assigned_users' => ['nullable', 'array'],
             'status' => ['required', 'in:pending,ongoing,testing,finished'],
+            'attachment_file' => 'nullable|file|max:2048'
         ];
     }
 }

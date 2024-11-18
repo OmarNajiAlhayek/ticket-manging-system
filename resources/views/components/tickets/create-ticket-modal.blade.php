@@ -7,9 +7,9 @@
 </x-modals.show-btn>
 
   <!-- Main modal -->
-  <x-modals.modal ticketId="0">
+  <x-modals.modal  ticketId="0">
 
-      <div id="modal-content-0" class="relative w-full max-w-md max-h-full p-4 bg-white rounded-lg shadow dark:bg-gray-700">
+      <div id="modal-content-0" class="relative w-full max-w-md p-4 bg-white rounded-lg shadow mt-52 h-fit dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -25,7 +25,7 @@
           </div>
           <!-- Modal body -->
           <div class="p-4 md:p-5">
-            <form action="{{ route('tickets.store') }}" method="POST" class="p-4 md:p-5">
+            <form action="{{ route('tickets.store') }}" method="POST" class="p-4 md:p-5" enctype="multipart/form-data">
                 @csrf
 
                   <div class="grid grid-cols-2 gap-4 mb-4">
@@ -51,7 +51,7 @@
                                 Deadline
                             </label>
                           <input
-                                type="datetime"
+                                type="date"
                                 id="deadline"
                                 name="deadline"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -118,7 +118,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />
 
-                    <x-form-error name="assigned_users" />
+                    <x-form-error name="attachment_file" />
               </div>
 
 
